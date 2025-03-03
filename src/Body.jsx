@@ -1,6 +1,7 @@
 export default function Body() {
   return (    
     <>
+    {/*body*/}
     <div className='relative'>
     <div className="relative top-0 overflow-hidden w-full h-screen">
       <img 

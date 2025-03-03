@@ -18,7 +18,7 @@ const Footer = () => {
           <h3 className="font-bold text-lg">Contact Us</h3>
           <ul className="mt-2 space-y-2 text-gray-200">
             <li>123 Street, City</li>
-            <li>Email: contact@myitinerary.com</li>
+            <li>Email: Contact@myitinerary.com</li>
             <li>Phone: (123) 456-7890</li>
           </ul>
         </div>

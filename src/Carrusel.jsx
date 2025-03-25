@@ -81,19 +81,21 @@ export default function Carrusel(){
       return () => clearInterval(interval);
     }, [VectorEspacios.length])
     
-
+    //usamos la propiedad de almacenar el valor previo para poder crear dinamica y reiniciar el index para que no haya problemas
     useEffect(() => {
       const handleResize = () => {
-        const newIsSmallScreen = window.innerWidth < 640;
-        if (newIsSmallScreen !== isSmallScreen) {
-          setIndex(0); // Reinicia el índice al cambiar de tamaño
-        }
-        setIsSmallScreen(newIsSmallScreen);
+        setIsSmallScreen(prev => {
+          const newIsSmallScreen = window.innerWidth < 640;
+          if (newIsSmallScreen !== prev) {
+            setIndex(0);
+          }
+          return newIsSmallScreen;
+        });
       };
     
       window.addEventListener("resize", handleResize);
       return () => window.removeEventListener("resize", handleResize);
-    }, [isSmallScreen]);
+    }, []);
     
 
     const prevSlide = ()=>{

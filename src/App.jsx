@@ -2,6 +2,7 @@
 import Home from './pages/Home'
 import Cities from './pages/Cities'
 import StandardLayout from './layouts/Standart'
+import CityDetails from './components/CityDetails'
 import { useEffect, useState } from 'react'
 
 async function fetchBack(url, setData){
@@ -20,19 +21,25 @@ async function fetchBack(url, setData){
 //importamos dos hooks, el primero es la envoltura y el segundo es que establece las rutas
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 function App() {
-
+  
+  const [isAscending, setIsAscending] = useState(true)
   const [info,setData] = useState([])
   useEffect(()=>{
     fetchBack('http://localhost:8080/api/cities/all',setData)
   },[])
 
+  function handleAscending() {
+    setIsAscending(prev => !prev);
+}
 
   const dataFinal = info && info.Cities ? info.Cities : [];
 
 
   //tratamos la data (ordenar y eliinar duplicados)
   const data = dataFinal ? [...new Map(dataFinal.map(item=> [item.name, item])).values()]
-  .sort((a,b)=> a.name.localeCompare(b.name)) 
+  .sort((a, b) => 
+    isAscending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+  )
   :[]
 
   
@@ -51,7 +58,11 @@ const router = createBrowserRouter(
         },
         {
           path:"/cities",
-          element: <Cities cities ={data}></Cities>
+          element: <Cities cities ={data}  handleAscending={ handleAscending}></Cities>
+        },
+        {
+          path:"/cityDetail",
+          element: <CityDetails></CityDetails>
         }
       ]
     },

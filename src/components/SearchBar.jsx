@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Search } from 'lucide-react';
 
 
-export default function SearchBar({handleSearch}){
+export default function SearchBar({handleSearch,  handleAscending}){
     const [isAZ, setIsAZ] = useState(true)
     return(
         <div className="overflow-hidden flex justify-center my-8 shadow-md">
@@ -16,7 +16,10 @@ export default function SearchBar({handleSearch}){
             <Search />
         </button>
         <button 
-            onClick={()=>setIsAZ(!isAZ)} 
+            onClick={()=>{
+                setIsAZ(!isAZ)
+                handleAscending()
+            }} 
             className="text-amber-50 font-black bg-[#2459D8] px-2 rounded-r-lg transition-all duration-300 ease-in-out"
         >
             {isAZ ? " A->Z" : " Z->A"}

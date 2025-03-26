@@ -2,7 +2,7 @@
 import SearchBar from "../components/SearchBar"
 import CityCard from "../components/CityCard"
 import { useState } from "react";
-export default function Cities({cities}){
+export default function Cities({cities,  handleAscending}){
  console.log(cities);
  const [search, setSearch] = useState(""
 
@@ -25,14 +25,14 @@ return(
     </div>
     <main className=" bg-black max-w-full px-4 pb-8">
     <section className="flex justify-center items-center">
-        <SearchBar handleSearch = {handleSearch}></SearchBar>
+        <SearchBar handleSearch = {handleSearch} handleAscending= { handleAscending}></SearchBar>
         </section>
         <section className="flex flex-wrap gap-8 justify-center">
         {cities.map(city=>(
             <CityCard
             key={city._id}
             city={city}  
-            search = {search}          
+            search = {search}         
             ></CityCard>
         ))}
         

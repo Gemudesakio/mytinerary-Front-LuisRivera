@@ -1,4 +1,5 @@
 import { MapPin } from "lucide-react";
+import { Link } from 'react-router-dom';
 import { useState } from "react";
 
 export default function CityCard({ city, search}) {
@@ -30,9 +31,14 @@ export default function CityCard({ city, search}) {
                 </div>
 
                 {/* Botón interactivo */}
-                <button className="bg-blue-700 text-white font-bold rounded-lg p-3 text-center hover:bg-blue-600 active:scale-95 transition-all shadow-lg md:w-[60%]">
+                <Link 
+                to={`/cityDetail`} 
+                className="md:w-[60%]"
+                state={{ city }} >
+                <button className="bg-blue-700 text-white font-bold rounded-lg p-3 text-center w-full hover:bg-blue-600 active:scale-95 transition-all shadow-lg">
                     View More
                 </button>
+                </Link>
             </div>
         </div>
     );

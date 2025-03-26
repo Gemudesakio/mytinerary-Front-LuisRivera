@@ -1,15 +1,20 @@
 import { Twitter, Instagram, Facebook } from 'lucide-react';
-
+import { NavLink } from 'react-router-dom';
+const routes = [
+  {path:"/", name:"Home"},
+  {path:"/cities", name: "Cities"}
+]
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-8 px-4 dark:border-t-2 ">
+    <footer className="bg-black text-white py-8 px-4 dark:border-t-2  ">
       <div className=" md:flex  md:justify-between lg:w-[67%] m-auto relative">
         {/* Sección Home */}
         <div className='pb-8'>
-          <h3 className="font-bold text-lg ">Home</h3>
+          <h3 className="font-bold text-lg ">Quick links</h3>
           <ul className="mt-2 space-y-2">
-            <li><a href="#" className="hover:underline">Cities</a></li>
-            <li><a href="#" className="hover:underline">Login</a></li>
+            {routes.map((route)=>(
+              <li key={route.path}><NavLink to={route.path} className="hover:underline">{route.name}</NavLink></li>
+            ))}
           </ul>
         </div>
         

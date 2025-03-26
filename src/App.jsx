@@ -1,20 +1,71 @@
 
-import Navbar from './Navbar'
-import Footer from './Footer'
-import Body from './Body'
-import Notice from './Notice'
+import Home from './pages/Home'
+import Cities from './pages/Cities'
+import StandardLayout from './layouts/Standart'
+import { useEffect, useState } from 'react'
+
+async function fetchBack(url, setData){
+  try {
+    const response = await fetch(url)
+    const data = await response.json()
+
+    setData(data)
+  } catch (error) {
+    console.log("error fetching API", error);
+    
+  }
+}
 
 
+//importamos dos hooks, el primero es la envoltura y el segundo es que establece las rutas
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 function App() {
+
+  const [info,setData] = useState([])
+  useEffect(()=>{
+    fetchBack('http://localhost:8080/api/cities/all',setData)
+  },[])
+
+
+  const dataFinal = info && info.Cities ? info.Cities : [];
+
+
+  //tratamos la data (ordenar y eliinar duplicados)
+  const data = dataFinal ? [...new Map(dataFinal.map(item=> [item.name, item])).values()]
+  .sort((a,b)=> a.name.localeCompare(b.name)) 
+  :[]
+
+  
+  
+  //creamos un router que contendra un vector de objetos, cada objeto es una pagina en especial
+  //en el objeto se debera espesificar la ruta y el componente que se desea mostrar
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <StandardLayout></StandardLayout>,
+      children: [
+        {
+          path:"",
+          element: <Home></Home>
+        },
+        {
+          path:"/cities",
+          element: <Cities cities ={data}></Cities>
+        }
+      ]
+    },
+ 
+  ]
+)
+
 
 
   return (
     <>
-    <Navbar></Navbar>
-      <Body></Body>
-      <Notice></Notice>
-      <Footer></Footer>
-     
+    <RouterProvider router={router}>
+
+    </RouterProvider>
     </>
   )
 }

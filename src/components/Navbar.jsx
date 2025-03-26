@@ -1,12 +1,18 @@
    /* Componente de Navbar Responsivo */
 import { useState } from 'react';
 import { Menu } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
+
+const routes = [
+  {path:"/", name:"Home"},
+  {path:"/cities", name: "Cities"}
+]
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="px-4 py-3 bg-black/70 z-10 fixed w-full">
+    <nav className="px-4 py-3 bg-black/70 z-999 fixed w-full backdrop-blur-md ">
       <div className="w-full sm:flex sm:items-center sm:justify-between m-auto lg:w-[67%]">
         {/* Sección del logo y botón de menú */}
         <section className="flex justify-between items-center">
@@ -38,14 +44,15 @@ export default function Navbar() {
            {/* Menu que se despliega o se oculta segun el tamanio de la pantalla y segun se haga click o no en el boton hamburguesa*/}
 
         <div className={`flex flex-col items-left mt-3 gap-3   sm:flex-row sm:m-0  ${isOpen ? 'flex' : 'hidden'} sm:block`}>
-          <button className="text-start group relative px-3 py-1 font-black text-amber-50">
-            Home
-            <span className="absolute left-1/2 bottom-0 w-0 h-[3px] bg-white transition-all duration-300 ease-in-out group-hover:w-3/4 group-hover:left-1/8"></span>
-          </button>
-          <button className="text-start group relative px-3 py-1 font-black text-amber-50">
-            Cities
-            <span className="absolute left-1/2 bottom-0 w-0 h-[3px] bg-white transition-all duration-300 ease-in-out group-hover:w-3/4 group-hover:left-1/8"></span>
-          </button>
+
+
+          {routes.map((route)=>(
+             <button key={route.path} className="text-start group relative px-3 py-1 font-black text-amber-50">
+             <NavLink to={route.path}>{route.name}</NavLink>
+             <span className="absolute left-1/2 bottom-0 w-0 h-[3px] bg-white transition-all duration-300 ease-in-out group-hover:w-3/4 group-hover:left-1/8"></span>
+           </button>
+          ))}
+          
           <div className="inline-block">
             <button className="bg-[#2459D8] flex gap-2 px-5 ms-2 py-3 text-white font-bold rounded-lg hover:bg-[#245ad8ce]">
                  {/* svg icono de usuario */}

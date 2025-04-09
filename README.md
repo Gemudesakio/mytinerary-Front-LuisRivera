@@ -1,3 +1,4 @@
+RAMA REDUX
 ========================================================================================================
  
  1. Instalación de dependencias necesarias
@@ -6,7 +7,7 @@
  npm install react-redux
  @reduxjs/toolkit: facilita la configuracin y manejo de Redux.
  react-redux: conecta Redux con los componentes de React.
- 
+
 ========================================================================================================
  
  2. Crear las acciones (actions)

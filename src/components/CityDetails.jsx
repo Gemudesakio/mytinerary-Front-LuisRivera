@@ -1,8 +1,13 @@
 import { useLocation } from 'react-router-dom';
+import ItineraryCard from "./itineraryCard";
+
 
 export default function CityDetails() {
+
+ 
 const { state } = useLocation();
 const { city } = state || {};
+
 
 if (!city) {
     return <div className="text-center text-red-500 py-8">No city data available</div>;
@@ -18,7 +23,7 @@ return (
     />
 
       {/* Contenedor de detalles */}
-    <div className="max-w-4xl mt-8 px-4">
+    <div className="max-w-4xl mt-8 px-4 ">
         <h1 className="text-5xl font-extrabold text-gray-400 mb-4 text-center hover:text-amber-50">
             {city.name}
         </h1>
@@ -40,6 +45,11 @@ return (
                 </div>
             </div>
             </div>
+            {console.log("city id desde detrails: " + city._id)}
+            
+            <ItineraryCard cityId={city._id} />
+
+
         </div>
   );
 }

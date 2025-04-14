@@ -1,8 +1,11 @@
 import { MapPin } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
-export default function CityCard({ city, search}) {
+
+export default function CityCard({ city}) {
+    const search = useSelector((state) => state.city.search)
     const backupImage = "https://us.123rf.com/450wm/irstone/irstone1411/irstone141100244/33898295-fondo-de-la-ciudad-hecha-de-siluetas-de-construcci%C3%B3n.jpg?ver=6"; // Imagen de respaldo
     const [imageSrc, setImageSrc] = useState(city.photo); // Estado para la imagen
     const display = city.name.toLowerCase().trim().includes(search.toLowerCase().trim()) || city.country.toLowerCase().trim().includes(search.toLowerCase().trim())

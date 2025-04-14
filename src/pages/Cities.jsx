@@ -1,16 +1,34 @@
 
 import SearchBar from "../components/SearchBar"
 import CityCard from "../components/CityCard"
-import { useState } from "react";
-export default function Cities({cities,  handleAscending}){
- console.log(cities);
- const [search, setSearch] = useState(""
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { getCities } from "../store/actions/cityActions"
+import { useSelector } from "react-redux"
+import { StatusHttp } from "../store/reducers/cityReducer"
 
- )
+export default function Cities(){
+    const status = useSelector((state)=>state.city.statusCities.status)
+    const Ascending = useSelector((state) => state.city.ascending)
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        if(status == StatusHttp.IDLE) {
+        dispatch(getCities())
+        }
+    },[dispatch, status])
 
- function handleSearch (e){
-    setSearch(e.target.value)
- }
+    const dataFinal = useSelector((state)=>state.city.statusCities.cities)
+
+   //tratamos la data (ordenar y eliinar duplicados)
+  const cities = dataFinal ? [...new Map(dataFinal.map(item=> [item.name, item])).values()]
+  .sort((a, b) => 
+    Ascending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+  )
+  :[]
+
+
+    
+    
 return(
 
     <>
@@ -25,14 +43,13 @@ return(
     </div>
     <main className=" bg-black max-w-full px-4 pb-8">
     <section className="flex justify-center items-center">
-        <SearchBar handleSearch = {handleSearch} handleAscending= { handleAscending}></SearchBar>
+        <SearchBar></SearchBar>
         </section>
         <section className="flex flex-wrap gap-8 justify-center">
         {cities.map(city=>(
             <CityCard
             key={city._id}
-            city={city}  
-            search = {search}         
+            city={city}         
             ></CityCard>
         ))}
         

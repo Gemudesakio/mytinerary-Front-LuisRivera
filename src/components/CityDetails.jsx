@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import ItineraryCard from "./itineraryCard";
+import { Link } from 'react-router-dom';
 
 
 export default function CityDetails() {
@@ -46,6 +47,9 @@ return (
             </div>
             </div>
             {console.log("city id desde detrails: " + city._id)}
+            <Link to='/cities'className="hover:bg-blue-600 active:scale-95  transition-all bg-blue-700 text-white shadow-lg font-bold rounded-lg p-3 text-center  w-[min(80%,24rem)] text-xl mt-7">
+                Back to Cities
+            </Link>
             
             <ItineraryCard cityId={city._id} />
 

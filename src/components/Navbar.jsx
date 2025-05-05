@@ -2,15 +2,25 @@
 import { useState } from 'react';
 import { Menu } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { logout } from '../store/actions/authAction';
 
 const routes = [
-  {path:"/", name:"Home"},
-  {path:"/cities", name: "Cities"}
+  {path:"/", name:"Home", type:"public"},
+  {path:"/cities", name: "Cities", type: "private"},
+  {path:"/SigIn", name: "SigIn", type:"auth"},
+  {path:null, name: "SigOut", type:"auth"}
 ]
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const token = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+    localStorage.removeItem("token"); // Elimina el token del almacenamiento local
+  };
   return (
     <nav className="px-4 py-3 bg-black/70 z-999 fixed w-full backdrop-blur-md ">
       <div className="w-full sm:flex sm:items-center sm:justify-between m-auto lg:w-[67%]">
@@ -46,27 +56,66 @@ export default function Navbar() {
         <div className={`flex flex-col items-left mt-3 gap-3   sm:flex-row sm:m-0  ${isOpen ? 'flex' : 'hidden'} sm:block`}>
 
 
-          {routes.map((route)=>(
-             <button key={route.path} className="text-start group relative px-3 py-1 font-black text-amber-50">
-             <NavLink to={route.path}>{route.name}</NavLink>
-             <span className="absolute left-1/2 bottom-0 w-0 h-[3px] bg-white transition-all duration-300 ease-in-out group-hover:w-3/4 group-hover:left-1/8"></span>
-           </button>
-          ))}
-          
-          <div className="inline-block">
-            <button className="bg-[#2459D8] flex gap-2 px-5 ms-2 py-3 text-white font-bold rounded-lg hover:bg-[#245ad8ce]">
-                 {/* svg icono de usuario */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 24 24"
-                fill="currentColor" 
-                className="w-5 h-5"
-              >
-                <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5.239 2.239-5 5 2.239 5 5 5zm0 2c-3.333 0-10 1.667-10 5v3h20v-3c0-3.333-6.667-5-10-5z" />
-              </svg>
-              Login
+          {routes.map((route)=>{           
+            if(!token && route.type == "public" ){
+            return (
+              <button key={route.path} className="text-start group relative px-3 py-1 font-black text-amber-50">
+              <NavLink to={route.path}>{route.name}</NavLink>
+              <span className="absolute left-1/2 bottom-0 w-0 h-[3px] bg-white transition-all duration-300 ease-in-out group-hover:w-3/4 group-hover:left-1/8"></span>
             </button>
-          </div>
+            )
+            }
+            if(token && route.type == "private" || route.type == "public"){
+              return (
+                <button key={route.path} className="text-start group relative px-3 py-1 font-black text-amber-50">
+                <NavLink to={route.path}>{route.name}</NavLink>
+                <span className="absolute left-1/2 bottom-0 w-0 h-[3px] bg-white transition-all duration-300 ease-in-out group-hover:w-3/4 group-hover:left-1/8"></span>
+              </button>
+              )
+            }
+            if (token && route.name === "SigOut") {
+              return  (  <div key={route.name} className="inline-block">
+                <button onClick={handleLogout} className="bg-amber-700 flex gap-2 px-5 ms-2 py-3 text-white font-bold rounded-lg hover:bg-amber-900">
+                     {/* svg icono de usuario */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 24 24"
+                    fill="currentColor" 
+                    className="w-5 h-5"
+                  >
+                    <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5.239 2.239-5 5 2.239 5 5 5zm0 2c-3.333 0-10 1.667-10 5v3h20v-3c0-3.333-6.667-5-10-5z" />
+                  </svg>
+                  {route.name}
+                </button>
+              </div>)
+            }
+            
+            if (!token && route.name === "SigIn") {
+              return  (  <div key={route.path} className="inline-block">
+                <NavLink to={route.path} className="bg-[#2459D8] flex gap-2 px-5 ms-2 py-3 text-white font-bold rounded-lg hover:bg-[#245ad8ce]">
+                     {/* svg icono de usuario */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 24 24"
+                    fill="currentColor" 
+                    className="w-5 h-5"
+                  >
+                    <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5.239 2.239-5 5 2.239 5 5 5zm0 2c-3.333 0-10 1.667-10 5v3h20v-3c0-3.333-6.667-5-10-5z" />
+                  </svg>
+                  {route.name}
+                </NavLink>
+              </div>)
+            }
+
+
+            
+            
+
+
+
+            })}
+          
+         
         </div>
       </div>
     </nav>
